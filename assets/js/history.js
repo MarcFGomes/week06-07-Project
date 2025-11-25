@@ -1,38 +1,28 @@
 //Load localStorage
-let citiesSearched = JSON.parse(localStorage.getItem('citiesSearched')) || [];
+let previousSearches = JSON.parse(localStorage.getItem('citiesSearched')) || [];
 
-
+const historyButton = document.getElementById("history-button");
 const searchButton = document.getElementById("search-button");
 const placeInput = document.getElementById("place");
 const historyList = document.getElementById("history-list");
 
-let previousSearches = [];
+ previousSearches = ["arrr","times"];
 
-// Add search to history
-function addToHistory(searchValue) {
-  if (!previousSearches.includes(searchValue)) {
-    previousSearches.push(searchValue);
-    updateHistoryList();
-  }
+// Show/Hide dropdown functions
+let hideTimeout;
+const showHistory = () => {
+     clearTimeout(hideTimeout);
+     historyList.style.display = "block";
+    }
+
+const hideHistory =() => {
+    hideTimeout = setTimeout(() => historyList.style.display = "none", 300);
 }
 
-// Update dropdown list
-function updateHistoryList() {
-  historyList.innerHTML = "";
-  previousSearches.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
-    li.addEventListener("click", () => {
-      placeInput.value = item;
-    });
-    historyList.appendChild(li);
-  });
-}
+//Hovering the button
+historyButton.addEventListener("mouseenter", showHistory);
+historyButton.addEventListener("mouseleave", hideHistory);
 
-// Handle hover to show/hide
-const historyButton = document.getElementById("history-button");
-historyButton.addEventListener("mouseenter", () => historyList.classList.remove("hidden"));
-historyButton.addEventListener("mouseleave", () => historyList.classList.add("hidden"));
-historyList.addEventListener("mouseenter", () => historyList.classList.remove("hidden"));
-historyList.addEventListener("mouseleave", () => historyList.classList.add("hidden"));
+// Hovering the list itself
+historyList.addEventListener("mouseenter", showHistory);
+historyList.addEventListener("mouseleave", hideHistory);
