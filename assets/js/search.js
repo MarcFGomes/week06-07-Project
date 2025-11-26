@@ -1,11 +1,5 @@
 
-//The search containers
-const modal = document.getElementById("empty-modal");
-const closeModal = document.getElementById("close-modal");
-const modalText = document.getElementById("modal-text");
-const resultsContainer = document.getElementById("results");
-const searchMode = document.getElementById("search-mode");
-const modeSelect = document.getElementById("search-mode");
+
 
 
 placeInput.addEventListener('keydown', (e) => {
@@ -17,7 +11,7 @@ searchButton.addEventListener("click", () => {
 })
 
 // Close modal when clicking X
-closeModal.addEventListener("click", () => {
+  closeModal.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
@@ -38,9 +32,6 @@ const handleSearch = () => {
     showModal("Please enter a place to search");
     return;
   }
-
-  // normal search code here
-  console.log("Searching for:", searchValue);
 
   //Secondary functions
   searchValue = normalize (searchValue);
@@ -63,7 +54,6 @@ const handleQuickSearch = (place) =>{
   const typeOfSearch = previousSearches[index].type;
 
   previousSearches.splice(index, 1);
-  console.log(previousSearches);
 
   previousSearches.push({value: place, type: typeOfSearch});
 
@@ -72,7 +62,6 @@ const handleQuickSearch = (place) =>{
     
   placeInput.value=""
   
-  console.log(`my value is ${typeOfSearch}`)
   fetchPlaceData(place, typeOfSearch, index);
 };
 
@@ -88,16 +77,16 @@ const showModal = (sentence) => {
 }
 
 //Change the placeholder info
-modeSelect.addEventListener("change", () => {
-    if (modeSelect.value === "country") {
+searchMode.addEventListener("change", () => {
+    if (searchMode.value === "country") {
         placeInput.placeholder = "Search by country name";
-    } else if (modeSelect.value === "capital") {
+    } else if (searchMode.value === "capital") {
         placeInput.placeholder = "Search by capital city";
     }
 });
 
 //skeleton function
-function showSkeletons(count = 3) {
+const showSkeletons = (count = 3) => {
   resultsContainer.innerHTML = ""; // clear old content
   
   for (let i = 0; i < count; i++) {
@@ -105,4 +94,8 @@ function showSkeletons(count = 3) {
     skeleton.classList.add("skeleton-card");
     resultsContainer.appendChild(skeleton);
   }
+}
+
+const hideSkeletons = () => {
+  resultsContainer.innerHTML = ""; // clear old content
 }

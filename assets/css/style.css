@@ -130,3 +130,9 @@ header  {
     transform: translateX(450px);
   }
 }
+
+/* Results */
+
+#results{
+  padding: 10px;
+}

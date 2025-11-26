@@ -1,17 +1,22 @@
+const apiKey ="2vbM3VqQrwr1zyvrJWuNrkmEXhvOE3mFbkHgO7xN6Xs"
+
+
 async function fetchPlaceData(placeName, type, number) {
   showSkeletons(); // show skeletons while loading
-    console.log(type);
+    
+    
+   const endpoint = (type === "country") ? "name" : "capital";
 
-    if (type==="country") {type = "name";}
-    else {type ="capital";}
-    console.log("Right here");
-  try {
-    const response = await fetch(`https://restcountries.com/v3.1/${type}/${placeName}`);
+    console.log(type + placeName + number);
+    
+    try {
+    const response = await fetch(`https://restcountries.com/v3.1/${endpoint}/${placeName}`);
 
     if (!response.ok) {
         previousSearches.splice(number, 1);//Delete the element in the array that provides no result;
         render();
         saveState();
+        hideSkeletons();
         showModal("No information found with that search!");
         return;
     }
@@ -19,26 +24,58 @@ async function fetchPlaceData(placeName, type, number) {
     const data = await response.json();
     console.log(data);
 
+     //Fetch Unsplash images
+    const images = await fetchUnsplashImages(placeName);
+
     // Replace skeletons with actual data
-    renderCountryData(data);
+    renderPlaceData(data, images);
 
   } catch (error) {
+    hideSkeletons();
     showModal("Sorry, could not find what you were looking for");
     return;
   }
 }
 
-function renderCountryData(data) {
+const renderPlaceData = (data, images) => {
   resultsContainer.innerHTML = ""; // remove skeletons
-  data.forEach(country => {
+  
     const card = document.createElement("div");
     card.classList.add("country-card");
     card.innerHTML = `
-      <img src="${country.flags.svg}" alt="${country.name.common}" />
-      <h3>${country.name.common}</h3>
-      <p>Capital: ${country.capital ? country.capital[0] : "N/A"}</p>
-      <p>Region: ${country.region}</p>
+      <img src="${data[0].flags.svg}" alt="${data[0].name.common}" />
+      <h3>${data[0].name.common}</h3>
+      <p>Capital: ${data[0].capital ? data[0].capital[0] : "N/A"}</p>
+      <p>Region: ${data[0].region}</p>
+      <div class="unsplash-gallery">
+        ${
+          images.length > 0
+          ? images.map(url => `<img src="${url}" class="unsplash-img" />`).join("")
+          : "<p>No images found.</p>"
+        }
+      </div>
     `;
     resultsContainer.appendChild(card);
-  });
+
+}
+
+
+
+// Fetch Unsplash images
+ async function fetchUnsplashImages(query) {
+  
+
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}&per_page=4&client_id=${apiKey}`
+    );
+
+    if (!res.ok) return [];
+
+    const json = await res.json();
+    return json.results.map(img => img.urls.small);
+
+  } catch (err) {
+    return [];
+  }
 }

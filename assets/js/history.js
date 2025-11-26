@@ -1,12 +1,7 @@
 //Load localStorage
 let previousSearches = JSON.parse(localStorage.getItem('placesSearched')) || [];
 
-//The history containers
-const historyButton = document.getElementById("history-button");
-const searchButton = document.getElementById("search-button");
-const placeInput = document.getElementById("place");
-const historyList = document.getElementById("history-list");
-previousSearches = [];
+
 //Make sure the input is lowerCase except the 1st letter which is uppercase
 const normalize = (str) => {
     str = str.toLowerCase();
