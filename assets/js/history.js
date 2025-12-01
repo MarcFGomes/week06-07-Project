@@ -56,7 +56,8 @@ const render = () => {
         li.textContent = previousSearches[i].value;
         
         li.classList.add(
-        previousSearches[i].type === "Country" ? "search-country" : "search-capital"
+        previousSearches[i].type === "Country" ? "search-country" : "search-capital",
+        "hover:bg-gray-400"
         );
         li.addEventListener("click", () => handleQuickSearch(previousSearches[i].value));
 

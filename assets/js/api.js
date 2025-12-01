@@ -40,16 +40,40 @@ const renderPlaceData = (data, images) => {
   resultsContainer.innerHTML = ""; // remove skeletons
 
   const card = document.createElement("div");
-  card.classList.add("country-card");
+  const cardForImg = document.createElement("div");
+  card.classList.add(
+  "country-card", 
+  "fade-in", 
+  "bg-white", 
+  "shadow-lg", 
+  "rounded-lg", 
+  "p-6", 
+  "text-center", 
+  "space-y-2", 
+  "transition", 
+  "transform", 
+  "hover:scale-105",
+  "w-1/3",
+  "h-full"
+);
+
+cardForImg.classList.add("fade-in", "p-4", "bg-gray-100", "rounded-lg", "shadow-md", "flex", "flex-col", "items-center", "gap-4", "w-2/3", "h-full");
+
   card.innerHTML = `
-      <img src="${data[0].flags.svg}" alt="${data[0].name.common}" />
-      <h3>${data[0].name.common}</h3>
-      <p>Capital: ${data[0].capital ? data[0].capital[0] : "N/A"}</p>
-      <p>Region: ${data[0].region}</p>
-      <div id="unsplash-gallery"></div>
-      <div id="pagination"></div>
+      <img src="${data[0].flags.svg}" alt="${data[0].name.common}"  class="w-full h-40 object-cover rounded-md shadow-sm"/>
+      <h3 class="text-xl font-bold text-gray-800">${data[0].name.common}</h3>
+      <p class="text-gray-600">Capital: ${data[0].capital ? data[0].capital[0] : "N/A"}</p>
+      <p class="text-gray-600">Region: ${data[0].region}</p>
     `;
   resultsContainer.appendChild(card);
+
+  cardForImg.innerHTML = `
+      <div id="unsplash-gallery" class="flex fl gap-4"></div>
+      <div id="pagination"></div>
+    `;
+
+  
+  resultsContainer.appendChild(cardForImg);
 
   paginateImages(images);
 };
@@ -88,7 +112,7 @@ function paginateImages(images) {
     images.slice(start, end).forEach((url) => {
       const img = document.createElement("img");
       img.src = url;
-      img.className = "unsplash-img fade-in";
+      img.className = "fade-in w-32 h-24 md:w-40 md:h-28 lg:w-48 lg:h-32 object-cover rounded-md shadow-md transition transform hover:scale-105 hover:shadow-lg cursor-pointer";
       gallery.appendChild(img);
     });
 

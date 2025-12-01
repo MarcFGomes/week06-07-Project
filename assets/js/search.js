@@ -86,14 +86,28 @@ searchMode.addEventListener("change", () => {
 });
 
 //skeleton function
-const showSkeletons = (count = 3) => {
-  resultsContainer.innerHTML = ""; // clear old content
+const showSkeletons = () => {
+  resultsContainer.innerHTML = ""; 
+
+  const skeletonCard = document.createElement("div");
+  const skeletonCardForImg = document.createElement("div");
+
+  skeletonCard.classList.add(
+  "skeleton-card",
+  "relative",
+  "overflow-hidden",
+  "bg-pink-500",
+  "shadow-lg", 
+  "rounded-lg", 
+  "w-1/3",
+  "h-full"
+);
   
-  for (let i = 0; i < count; i++) {
-    const skeleton = document.createElement("div");
-    skeleton.classList.add("skeleton-card");
-    resultsContainer.appendChild(skeleton);
-  }
+  skeletonCardForImg.classList.add("skeleton-card", "relative", "overflow-hidden", "rounded-lg", "shadow-lg", "bg-pink-500", "w-2/3", "h-full");
+
+  resultsContainer.appendChild(skeletonCard);
+  resultsContainer.appendChild(skeletonCardForImg);
+  
 }
 
 const hideSkeletons = () => {
